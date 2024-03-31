@@ -1,0 +1,109 @@
+---
+import Button from "../ui/Button.astro"
+import Input from "../ui/Input.astro"
+---
+
+<form
+	id="contactForm"
+	class="flex h-full flex-col gap-8 rounded-lg bg-royal-blue-950/10 px-4 py-8 text-royal-blue-200 shadow-lg backdrop-blur-sm md:px-8 md:py-16 md:shadow-xl"
+>
+	<fieldset class="flex flex-col gap-8">
+		<Input
+			autofocus
+			type="email"
+			nameInput="identifier"
+			placeholder="tucorreo@adress.co"
+			classes=""
+			label="Escribe tu email"
+		/>
+		<Input
+			nameInput="subjectbox"
+			type="text"
+			placeholder="Queremos paz"
+			classes=""
+			label="Escribe el asunto"
+		/>
+
+		<label class="text-casablanca-200 relative">
+			Escribe tu mensaje
+			<textarea
+				name="message"
+				id="message"
+				class="w-full rounded-md bg-transparent px-[0.8em] py-4 text-royal-blue-200 outline-none transition-all focus:outline-royal-blue-950"
+				placeholder="La paz es un derecho que todos debemos tener..."></textarea>
+		</label>
+	</fieldset>
+	<Button id="sendButton" classes="self-center" title="Enviar" />
+</form>
+
+<script>
+	const contactForm = document.querySelector("#contactForm") as HTMLFormElement
+	const sendButton = document.querySelector("#sendButton") as HTMLButtonElement
+	const emailSender = document.querySelector("#identifier") as HTMLInputElement
+	const subjectbox = document.querySelector("#subjectbox") as HTMLInputElement
+	const message = document.querySelector("#message") as HTMLTextAreaElement
+
+	contactForm!.addEventListener("submit", (e) => {
+		e.preventDefault()
+
+		const data = {
+			emailSender: emailSender?.value,
+			subjectbox: subjectbox?.value,
+			message: message?.value,
+		}
+
+		if (!data.emailSender) {
+			const inputBorder = emailSender.nextElementSibling as HTMLElement
+
+			emailSender.focus()
+
+			inputBorder.classList.remove("input-border-alt")
+			inputBorder.classList.add("input-border-error")
+
+			return
+		}
+
+		if (!data.subjectbox) {
+			const inputBorder = subjectbox.nextElementSibling as HTMLElement
+
+			subjectbox.focus()
+
+			inputBorder.classList.remove("input-border-alt")
+			inputBorder.classList.add("input-border-error")
+
+			return
+		}
+
+		if (!data.message) {
+			message.focus()
+
+			message.classList.remove("focus:outline-royal-blue-950")
+			message.classList.add("focus:outline-red-500")
+
+			return
+		}
+
+		console.log(data)
+	})
+</script>
+
+<style>
+	label::before {
+		content: "*";
+		color: red;
+		margin-right: 0.2em;
+		position: absolute;
+		top: -6px;
+		left: -8px;
+	}
+
+	textarea {
+		resize: none;
+		font-size: 1.2rem;
+
+		field-sizing: content;
+		max-height: 500px;
+
+		margin-top: 0.8rem;
+	}
+</style>

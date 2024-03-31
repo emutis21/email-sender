@@ -1,0 +1,98 @@
+---
+interface Props {
+	placeholder: string
+	classes?: string
+	nameInput: string
+	label: string
+	autofocus?: boolean
+	type: "text" | "email"
+}
+
+const { placeholder, classes, nameInput, label, autofocus, type } = Astro.props
+---
+
+<div class={`form-control ${classes}`}>
+	<label for={nameInput} class="text-casablanca-200 w-full">
+		{label}
+		<input
+			autofocus={autofocus}
+			class="input input-alt text-royal-blue-200"
+			id={nameInput}
+			placeholder={placeholder}
+			name={nameInput}
+			type={type}
+		/>
+		<span class="input-border input-border-alt"></span>
+	</label>
+</div>
+
+<style>
+	label::before {
+		content: "*";
+		color: #ff0000;
+		margin-right: 0.2em;
+		position: absolute;
+		top: -6px;
+		left: -8px;
+	}
+
+	.input {
+		font-size: 0.9rem;
+		background-color: transparent;
+		width: 100%;
+		box-sizing: border-box;
+		padding-inline: 0.5em;
+		padding-block: 0.7em;
+		border: none;
+		/* border-bottom: var(--border-height) solid var(--border-before-color);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+	}
+
+	.input-border {
+		position: absolute;
+		background: var(--border-after-color);
+		width: 0%;
+		height: 2px;
+		bottom: 0;
+		left: 0;
+		transition: width 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+	}
+
+	.input:focus {
+		outline: none;
+	}
+
+	.input:focus + .input-border {
+		width: 100%;
+	}
+
+	.form-control {
+		position: relative;
+		--width-of-input: 300px;
+	}
+
+	.input-alt {
+		font-size: 1.2rem;
+		padding-inline: 1em;
+		padding-block: 0.8em;
+		/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+	}
+
+	.input-border-alt,
+	.input-border-error {
+		height: 3px;
+		transition: width 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+	}
+
+	.input-border-alt {
+		background: linear-gradient(90deg, #342a85 0%, #543fec 50%, #fab440 100%);
+	}
+
+	.input-border-error {
+		background: linear-gradient(90deg, #ff0000 0%, #ff0000 50%, #ff0000 100%);
+	}
+
+	.input-alt:focus + .input-border-alt {
+		width: 100%;
+	}
+</style>

@@ -1,13 +1,17 @@
 ---
+import Noise from "@/components/Noise.astro"
+import "@fontsource/prompt"
+import "@fontsource/unbounded/700.css"
+
 interface Props {
-	title: string;
+	title: string
 }
 
-const { title } = Astro.props;
+const { title } = Astro.props
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description" />
@@ -18,34 +22,61 @@ const { title } = Astro.props;
 	</head>
 	<body>
 		<slot />
+		<Noise />
 	</body>
 </html>
 <style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
 	html {
-		font-family: system-ui, sans-serif;
-		background: #13151a;
-		background-size: 224px;
+		font-family: "Prompt", system-ui, sans-serif;
+		scrollbar-gutter: stable;
+		scrollbar-width: thin;
+		scrollbar-color: hsl(247, 51%, 10%) hsl(247, 51%, 20%);
+		color-scheme: dark light;
 	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
+
+	body {
+		margin: 0;
+		padding: 0;
+		display: grid;
+
+		grid-template-columns: [full-width-start] 10% [breakout-start] 1fr [content-start] 2fr [content-end] 1fr [breakout-end] 10% [full-width-end];
+		grid-template-rows: [header-start] 160px [content-start] 1fr [content-end] 80px [footer-end];
+
+		@media (max-width: 1450px) {
+			grid-template-columns: [full-width-start] 5% [breakout-start] 1fr [content-start] 2fr [content-end] 1fr [breakout-end] 5% [full-width-end];
+			grid-template-rows: [header-start] 140px [content-start] 1fr [content-end] 60px [footer-end];
+		}
+
+		@media (max-width: 1080px) {
+			grid-template-columns: [full-width-start] 2% [breakout-start] 30px [content-start] 1fr [content-end] 30px [breakout-end] 2% [full-width-end];
+			grid-template-rows: [header-start] 120px [content-start] 1fr [content-end] 40px [footer-end];
+		}
+
+		@media (max-width: 705px) {
+			grid-template-columns: [full-width-start] 10px [breakout-start] 30px [content-start] 1fr [content-end] 30px [breakout-end] 10px [full-width-end];
+			grid-template-rows: [header-start] 100px [content-start] 1fr [content-end] 30px [footer-end];
+		}
+
+		@apply min-h-[100dvh] text-royal-blue-50;
+
+		&::before {
+			content: "";
+			background: hsl(244, 100%, 7%);
+			background: linear-gradient(155deg, hsl(247, 51%, 3%) 6%, hsl(295, 98%, 7%) 94%);
+			@apply fixed left-0 top-0 -z-10 h-full w-full;
+		}
+
+		> * {
+			grid-column: content;
+		}
+	}
+
+	h1 {
+		font-family: "Unbounded", system-ui, sans-serif;
+		font-size: clamp(2rem, 5vw, 3rem);
+		font-weight: 800;
+		line-height: 1.2;
+		margin: 0;
+		text-align: center;
 	}
 </style>

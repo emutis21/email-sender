@@ -1,0 +1,27 @@
+---
+import SaveIcon from '@/icons/SaveIcon.astro'
+
+interface Props {
+	title: string
+	classes?: string
+	id?: string
+}
+
+const { title, classes, id } = Astro.props
+---
+
+<button
+	id={id}
+	title={title}
+	class={`${classes} flex cursor-pointer items-center rounded-md bg-casablanca-950 fill-casablanca-400 p-2 duration-100 hover:bg-casablanca-900 active:border active:border-casablanca-400`}
+>
+	<SaveIcon />
+	<span class='pr-1 text-sm font-bold text-casablanca-400'>{title}</span>
+</button>
+
+<style>
+	button.disable {
+		pointer-events: none;
+		opacity: 0.5;
+	}
+</style>

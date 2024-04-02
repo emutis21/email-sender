@@ -1,0 +1,63 @@
+---
+import Button from './ui/Button.astro'
+import Input from './ui/Input.astro'
+---
+
+<section id='sectionContact' class='h-full flex-col gap-6'>
+	<!-- <Button id='returButton' classes='self-start [&>svg]:rotate-[180deg] [&>svg]:-left-1' title='' /> -->
+	<form id='contactForm' class='flex h-full flex-col justify-between gap-8'>
+		<fieldset class='flex flex-1 flex-col gap-8'>
+			<Input
+				autofocus
+				type='email'
+				nameInput='identifier'
+				placeholder='tucorreo@address.co'
+				classes=''
+				label='Escribe tu email'
+			/>
+			<Input
+				nameInput='subjectbox'
+				type='text'
+				placeholder='Queremos paz'
+				classes=''
+				label='Escribe el asunto'
+			/>
+
+			<label class='relative text-casablanca-200'>
+				Escribe tu mensaje ok <textarea
+					name='message'
+					id='message'
+					class='w-full rounded-md bg-transparent px-[0.8em] py-4 text-royal-blue-200 outline-none transition-all focus:outline-royal-blue-950'
+					placeholder='La paz es un derecho que todos debemos tener...'></textarea>
+			</label>
+		</fieldset>
+		<Button id='sendButton' classes='self-center' title='Enviar' />
+	</form>
+</section>
+
+<script>
+	import { handleContactFormEvents } from '@/utils/formHandlers.ts'
+
+	handleContactFormEvents()
+</script>
+
+<style>
+	label::before {
+		content: '*';
+		color: red;
+		margin-right: 0.2em;
+		position: absolute;
+		top: -6px;
+		left: -8px;
+	}
+
+	textarea {
+		resize: none;
+		font-size: 1.2rem;
+
+		field-sizing: content;
+		max-height: 500px;
+
+		margin-top: 0.8rem;
+	}
+</style>

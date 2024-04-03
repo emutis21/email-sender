@@ -31,11 +31,9 @@ const recipients = await api.list()
 </section>
 
 <script>
-	import { handleRecipientFormEvents } from '@/utils/formHandlers.ts'
+	import { handleRecipientFormEvents } from '@/utils/form/recipients'
+
 	document.addEventListener('astro:page-load', () => {
-		handleRecipientFormEvents((selectedRecipients) => {
-			const selectedRecipientsJson = JSON.stringify(selectedRecipients)
-			localStorage.setItem('selectedRecipients', selectedRecipientsJson)
-		})
+		handleRecipientFormEvents()
 	})
 </script>

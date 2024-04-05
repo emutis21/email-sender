@@ -1,3 +1,5 @@
+import { LOCAL_STORAGE_KEY_RECIPIENTS } from '../consts'
+
 import type {
 	ButtonStateParams,
 	CheckboxEventListenersParams,
@@ -5,13 +7,13 @@ import type {
 	FormSubmitEventListenerParams,
 	FormSubmitParams,
 	GetCheckedCheckboxesParams,
+	GetDomElementsParams,
 	HandleCheckboxChangeParams,
-	State,
 } from './types'
 
-function getDomElements() {
+function getDomElements(): GetDomElementsParams | null {
 	const recipientsForm = document.querySelector('#recipientsForm') as HTMLFormElement
-	if (!recipientsForm) return
+	if (!recipientsForm) return null
 	const title = recipientsForm.querySelector('h2') as HTMLHeadingElement
 	const continueButton = document.querySelector('#continueButton') as HTMLButtonElement
 	const saveButton = recipientsForm.querySelector('#saveButton') as HTMLButtonElement
@@ -108,7 +110,7 @@ function handleFormSubmit({
 	}
 
 	state.selectedRecipients = selectedRecipients
-	localStorage.setItem('selectedRecipients', JSON.stringify(state.selectedRecipients))
+	localStorage.setItem(LOCAL_STORAGE_KEY_RECIPIENTS, JSON.stringify(state.selectedRecipients))
 
 	if (typeof callback === 'function') {
 		callback(selectedRecipients)
@@ -135,7 +137,7 @@ function handleFormSubmit({
 
 	window.toast({
 		title: 'Destinatarios seleccionados',
-		location: 'top-right',
+		location: 'top-center',
 		dismissible: true,
 		type: 'success',
 		icon: true,
@@ -165,7 +167,7 @@ function addCheckboxEventListeners({
 	continueButton,
 }: CheckboxEventListenersParams) {
 	checkboxes.forEach((checkbox) => {
-		checkbox.addEventListener('change', (event) => {
+		checkbox.addEventListener('change', () => {
 			handleCheckboxChange({
 				state,
 				updateSaveButtonState,
@@ -232,14 +234,4 @@ export function dispatchRecipientFormEvents(
 		continueButton,
 		callback: callback,
 	})
-}
-
-export function handleRecipientFormEvents() {
-	const state: State = {
-		selectedRecipients: localStorage.getItem('selectedRecipients')
-			? JSON.parse(localStorage.getItem('selectedRecipients') as string)
-			: [],
-	}
-
-	dispatchRecipientFormEvents({ state })
 }

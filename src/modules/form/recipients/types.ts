@@ -1,7 +1,15 @@
 interface BaseParams {
-	state: State
+	state: StateCheckboxes
 	saveButton: HTMLButtonElement
 	continueButton: HTMLButtonElement
+}
+
+export interface GetDomElementsParams {
+	recipientsForm: HTMLFormElement
+	title: HTMLHeadingElement
+	continueButton: HTMLButtonElement
+	saveButton: HTMLButtonElement
+	checkboxes: NodeListOf<HTMLInputElement>
 }
 
 export interface GetCheckedCheckboxesParams {
@@ -34,7 +42,7 @@ export interface ButtonStateParams {
 }
 
 export interface FormSubmitParams {
-	state: State
+	state: StateCheckboxes
 	event: Event
 	recipientsForm: HTMLFormElement
 	title: HTMLHeadingElement
@@ -44,10 +52,10 @@ export interface FormSubmitParams {
 }
 
 export interface DispatchRecipientFormEventsParams {
-	state: State
+	state: StateCheckboxes
 	callback?: (selectedRecipients: string[]) => void
 }
 
-export interface State {
+export interface StateCheckboxes {
 	selectedRecipients: string[]
 }

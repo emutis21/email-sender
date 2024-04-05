@@ -1,16 +1,16 @@
-import type { Recipient as IRecipient } from "./types"
+import type { Recipient as IRecipient } from './types'
 
-import Papa from "papaparse"
+import Papa from 'papaparse'
 
 interface RawRecipient extends IRecipient {
-	type: "recipient"
+	type: 'recipient'
 }
 
 class Recipient implements IRecipient {
-	id!: IRecipient["id"]
-	recipientName!: IRecipient["recipientName"]
-	recipientEmail!: IRecipient["recipientEmail"]
-	recipientPhone!: IRecipient["recipientPhone"]
+	id!: IRecipient['id']
+	recipientName!: IRecipient['recipientName']
+	recipientEmail!: IRecipient['recipientEmail']
+	recipientPhone!: IRecipient['recipientPhone']
 
 	set(recipient: RawRecipient) {
 		Object.assign(this, {
@@ -34,7 +34,7 @@ class Recipient implements IRecipient {
 }
 
 function normalize(data: RawRecipient[]) {
-	const recipients = new Map<RawRecipient["id"], Recipient>()
+	const recipients = new Map<RawRecipient['id'], Recipient>()
 
 	for (const person of data) {
 		const baseRecipient = new Recipient()
@@ -69,13 +69,19 @@ const api = {
 			})
 		})
 	},
-	fetch: async (id: IRecipient["id"]): Promise<IRecipient> => {
+	fetch: async (id: IRecipient['id']): Promise<IRecipient> => {
 		const recipients = await api.list()
 		const recipient = recipients.find((recipient) => recipient.id === id)
 
-		if (!recipient) return Promise.reject("Recipient not found")
+		if (!recipient) return Promise.reject('Recipient not found')
 
 		return recipient
+	},
+	mock: {
+		list: (mock: string): Promise<IRecipient[]> =>
+			import(`./mocks/${mock}.json`).then((result: { default: RawRecipient[] }) =>
+				normalize(result.default)
+			),
 	},
 }
 

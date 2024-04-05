@@ -1,34 +1,38 @@
 ---
+import ClearInputsIcon from '@/icons/ClearInputsIcon.astro'
+
 interface Props {
 	placeholder: string
 	classes?: string
 	nameInput: string
 	label: string
 	autofocus?: boolean
-	type: "text" | "email"
+	type: 'text' | 'email'
 }
 
 const { placeholder, classes, nameInput, label, autofocus, type } = Astro.props
 ---
 
-<div class={`form-control ${classes}`}>
-	<label for={nameInput} class="text-casablanca-200 w-full">
+<div class=`form-control flex`>
+	<label for={nameInput} class='w-full text-casablanca-200'>
 		{label}
 		<input
 			autofocus={autofocus}
-			class="input input-alt text-royal-blue-200"
+			class='input input-alt text-royal-blue-200'
 			id={nameInput}
 			placeholder={placeholder}
 			name={nameInput}
 			type={type}
 		/>
-		<span class="input-border input-border-alt"></span>
+		<span class='input-border input-border-alt'></span>
 	</label>
+
+	<ClearInputsIcon id={`clear-${nameInput}`} classes=`${classes} self-end pb-4` />
 </div>
 
 <style>
 	label::before {
-		content: "*";
+		content: '*';
 		color: #ff0000;
 		margin-right: 0.2em;
 		position: absolute;

@@ -4,34 +4,47 @@ import Anchor from './ui/Anchor.astro'
 import Checkbox from './ui/Checkbox.astro'
 import SaveButton from './ui/SaveButton.astro'
 
-const recipients = await api.list()
+const recipients = await api.mock.list('default')
 ---
 
 <section id='sectionRecipients' class='flex h-full flex-col'>
-	<form
-		data-astro-reload
-		id='recipientsForm'
-		class='flex h-full w-full flex-1 flex-col justify-start gap-12 md:gap-16'
-	>
-		<h2 class='' id='titleForm'>Selecciona los destinatarios</h2>
-		<fieldset class='justify-self-start'>
-			<ul class='ml-2 flex w-full flex-col gap-4 md:gap-8'>
-				{
-					recipients.map(({ id, recipientName }) => (
-						<li class='w-full'>
-							<Checkbox name={id} value={recipientName} checked={false} />
-						</li>
-					))
-				}
-			</ul>
-		</fieldset>
-		<SaveButton id='saveButton' title='Guardar' classes='self-start' />
-	</form>
-	<Anchor href='/contact-form' id='continueButton' title='Continuar' classes='self-end disable' />
+	{
+		recipients.length === 0 ? (
+			<h2 class='w-full'>No hay destinatarios</h2>
+		) : (
+			<>
+				<form
+					data-astro-reload
+					id='recipientsForm'
+					class='flex h-full w-full flex-1 flex-col justify-start gap-12 md:gap-16'
+				>
+					<h2 class='' id='titleForm'>
+						Selecciona los destinatarios
+					</h2>
+					<fieldset class='justify-self-start'>
+						<ul class='ml-2 flex w-full flex-col gap-4 md:gap-8'>
+							{recipients.map(({ id, recipientName }) => (
+								<li class='w-full'>
+									<Checkbox name={id} value={recipientName} checked={false} />
+								</li>
+							))}
+						</ul>
+					</fieldset>
+					<SaveButton id='saveButton' title='Guardar' classes='self-start' />
+				</form>
+				<Anchor
+					href='/contact-form'
+					id='continueButton'
+					title='Continuar'
+					classes='self-end disable'
+				/>
+			</>
+		)
+	}
 </section>
 
 <script>
-	import { handleRecipientFormEvents } from '@/utils/form/recipients'
+	import { handleRecipientFormEvents } from '@/modules/form'
 
 	document.addEventListener('astro:page-load', () => {
 		handleRecipientFormEvents()

@@ -1,9 +1,18 @@
 ---
+import AiStarsIcon from '@/icons/AiStarsIcon.astro'
+import ClearInputsIcon from '@/icons/ClearInputsIcon.astro'
+import Modal from './Modal.astro'
 import Button from './ui/Button.astro'
 import Input from './ui/Input.astro'
+
+// async function getMessages() {
+// 	const response = await fetch('/api/gemini')
+// 	const data = await response.json()
+// 	return data
+// }
 ---
 
-<section id='sectionContact' class='h-full flex-col gap-6'>
+<section id='sectionContact' class='flex h-full flex-col gap-6'>
 	<!-- <Button id='returButton' classes='self-start [&>svg]:rotate-[180deg] [&>svg]:-left-1' title='' /> -->
 	<form id='contactForm' class='flex h-full flex-col justify-between gap-8'>
 		<fieldset class='flex flex-1 flex-col gap-8'>
@@ -19,26 +28,77 @@ import Input from './ui/Input.astro'
 				nameInput='subjectbox'
 				type='text'
 				placeholder='Queremos paz'
-				classes=''
+				classes='hidden'
 				label='Escribe el asunto'
 			/>
 
 			<label class='relative text-casablanca-200'>
-				Escribe tu mensaje ok <textarea
+				Escribe tu mensaje
+				<textarea
+					class='textarea'
 					name='message'
 					id='message'
-					class='w-full rounded-md bg-transparent px-[0.8em] py-4 text-royal-blue-200 outline-none transition-all focus:outline-royal-blue-950'
 					placeholder='La paz es un derecho que todos debemos tener...'></textarea>
+				<div class='absolute right-0 top-[3.5rem] text-royal-blue-50'>
+					<ClearInputsIcon id='clear-message' classes='hidden' />
+					<AiStarsIcon id='stars-message' classes='' />
+				</div>
 			</label>
 		</fieldset>
 		<Button id='sendButton' classes='self-center' title='Enviar' />
 	</form>
 </section>
 
-<script>
-	import { handleContactFormEvents } from '@/utils/form/formHandlers'
+<section class=''>
+	<Modal />
+	<p id='propmResponse'></p>
+</section>
 
-	handleContactFormEvents()
+<script>
+	import { handleContactFormEvents } from '@/modules/form'
+	const propmResponse = document.querySelector('#propmResponse')
+
+	document.addEventListener('astro:page-load', () => {
+		handleContactFormEvents()
+	})
+
+	const url = '/api/gemini'
+
+	const dataToCreate = {
+		trainingInput:
+			'Sí te preguntan por un chiste de colombia, responde con un chiste sobre colombia. Pero si te preguntan por cualquier otra cosa, responde que no sabes y trata de evadir la pregunta.',
+		prompt: 'Qué sabes de Colombia?',
+		temperature: 0.9,
+	}
+
+	const dataToEnhance = {
+		prompt: 'Escribe un poema',
+		temperature: 0.5,
+	}
+
+	async function postData({ url, data }: { url: string; data: any }) {
+		try {
+			const res = await fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(data),
+			})
+
+			if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+
+			const dataRes = await res.json()
+			console.log(dataRes)
+			const html = `<p>${dataRes.message.text}</p>`
+
+			propmResponse!.innerHTML = html
+		} catch (error) {
+			console.error('Error:', error)
+		}
+	}
+
+	// postData({ url, data: dataToCreate })
 </script>
 
 <style>
@@ -52,12 +112,23 @@ import Input from './ui/Input.astro'
 	}
 
 	textarea {
-		resize: none;
-		font-size: 1.2rem;
-
-		field-sizing: content;
-		max-height: 500px;
-
 		margin-top: 0.8rem;
+		resize: vertical;
+		font-size: 1.2rem;
+		max-height: 800px;
+
+		/* field-sizing: content;
+		max-width: calc(100% - 2em); */
+		/* white-space: pre-wrap; */
+
+		@apply w-full rounded-md bg-transparent py-4 pl-[0.8em] pr-10 text-royal-blue-200 outline-none outline-royal-blue-950/50 transition-all;
+	}
+
+	.textarea:focus {
+		@apply outline-royal-blue-500;
+	}
+
+	.textarea-error:focus {
+		@apply outline-red-500;
 	}
 </style>

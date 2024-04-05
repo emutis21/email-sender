@@ -1,0 +1,76 @@
+<button class='open-modal'> abrir </button>
+<aside class='popup-container'>
+	<div class='popup-box'>
+		<button class='close-modal'>Cerrar</button>
+		<h1>Holaaa</h1>
+
+		<p>Soy un popup</p>
+	</div>
+</aside>
+
+<script>
+	const openModal = document.querySelector('.open-modal') as HTMLButtonElement
+	const closeModal = document.querySelector('.close-modal') as HTMLButtonElement
+	const popupContainer = document.querySelector('.popup-container') as HTMLDivElement
+
+	openModal.addEventListener('click', () => {
+		popupContainer.classList.add('active')
+	})
+
+	closeModal.addEventListener('click', () => {
+		popupContainer.classList.remove('active')
+	})
+</script>
+
+<style>
+	.popup-container {
+		grid-column: breakout;
+		top: 0;
+		right: 0;
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		background-color: red;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.popup-container.active {
+		opacity: 1;
+		pointer-events: all;
+	}
+
+	.popup-container .popup-box {
+		width: 300px;
+		background-color: #f3f3f3;
+		padding: 20px;
+		border-radius: 5px;
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+
+	.popup-container .popup-box h1 {
+		font-size: 24px;
+		margin-bottom: 10px;
+	}
+
+	.popup-container .popup-box p {
+		font-size: 16px;
+		margin-bottom: 20px;
+	}
+
+	.popup-container .popup-box button {
+		padding: 10px 20px;
+		background-color: #333;
+		color: #fff;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+
+	.popup-container .popup-box button:hover {
+		background-color: #555;
+	}
+</style>
